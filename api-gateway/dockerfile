@@ -1,0 +1,17 @@
+# Use a minimal runtime base image
+FROM eclipse-temurin:17-jre-alpine
+
+# Add metadata
+LABEL maintainer="api-gateway"
+
+# Set working directory
+WORKDIR /app
+
+# Copy only the built JAR file
+COPY target/*.jar app.jar
+
+# Expose the application port
+EXPOSE 8765
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]

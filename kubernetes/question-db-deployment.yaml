@@ -1,0 +1,41 @@
+# question-db-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: question-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: question-db
+  template:
+    metadata:
+      labels:
+        app: question-db
+    spec:
+      containers:
+        - name: question-db
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "password"
+            - name: POSTGRES_DB
+              value: "quizapp"
+---
+# question-db-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: question-db
+spec:
+  selector:
+    app: question-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
